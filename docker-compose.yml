@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+    app:
+        build: "./docker-file"
+        # ports でポートフォワーディングを指定.
+        ports:
+            - "11180:80"
+        volumes:
+            - "./source-file:/var/www/html"
+        links:
+          - "mysql:mysql"
+    mysql:
+        image: mysql:5.7.22
+        volumes:
+        - "./mysql-data:/var/lib/mysql"
+        ports:
+          - "3306:3306"
+        environment:
+          # アプリケーションから利用するユーザー
+          - MYSQL_DATABASE=my_application
+          - MYSQL_USER=my_application
+          - MYSQL_PASSWORD=my_application
+          # root パスワード
+          - MYSQL_ROOT_PASSWORD=root_password
